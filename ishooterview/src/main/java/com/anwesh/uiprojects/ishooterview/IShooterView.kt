@@ -31,3 +31,27 @@ fun Int.inverse() : Float = 1f / this
 fun Float.maxScale(i : Int, n : Int) : Float = Math.max(0f, this - i * n.inverse())
 fun Float.divideScale(i : Int, n : Int) : Float = Math.min(n.inverse(), maxScale(i, n)) * n
 fun Float.sinify() : Float = Math.sin(this * Math.PI).toFloat()
+
+fun Canvas.drawIShooter(scale : Float, w : Float, h : Float, paint : Paint) {
+    val barW : Float = Math.min(w, h) / barWFactor
+    val barH : Float = Math.min(w, h) / barHFactor
+    val r : Float = barW / 2
+    val sf : Float = scale.sinify()
+    val sf1 : Float = sf.divideScale(0, parts)
+    val sf2 : Float = sf.divideScale(1, parts)
+    val sf3 : Float = sf.divideScale(2, parts)
+    val offset = -barH * 1.5f
+    val y : Float = offset + (-h + r - offset) * sf3
+    save()
+    translate(w / 2, h)
+    drawRect(RectF(-barW / 2, -barH * sf1, barW / 2, 0f), paint)
+    drawCircle(0f, y, r * sf2, paint)
+    restore()
+}
+
+fun Canvas.drawISNode(i : Int, scale : Float, paint : Paint) {
+    val w : Float = width.toFloat()
+    val h : Float = height.toFloat()
+    paint.color = colors[i]
+    drawIShooter(scale, w, h, paint)
+}

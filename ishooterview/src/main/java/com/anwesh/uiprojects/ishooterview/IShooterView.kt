@@ -207,4 +207,13 @@ class IShooterView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    companion object {
+
+        fun create(activity : Activity) : IShooterView {
+            val view : IShooterView = IShooterView(activity)
+            activity.setContentView(view)
+            return view
+        }
+    }
 }
